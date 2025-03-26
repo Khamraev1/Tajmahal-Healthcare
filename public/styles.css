@@ -1071,63 +1071,484 @@ footer {
 }
 
 /* Responsive Styles */
-@media screen and (max-width: 320px) {
-    .header-content h1 {
-        font-size: 24px;
-        line-height: 1.3;
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+        padding: 0 20px;
     }
 
-    .header-content p {
-        font-size: 14px;
-        margin: 10px 0;
+    .services-grid,
+    .doctors-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
     }
 
-    .nav-links ul {
-        padding: 10px;
+    .service-card,
+    .doctor-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        max-width: 720px;
     }
 
-    .nav-links li {
-        margin: 5px 0;
+    .services-grid,
+    .doctors-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .service-card,
+    .doctor-card {
+        padding: 1.25rem;
+    }
+
+    .doctor-card img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 540px;
+    }
+
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .hero-content {
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
     }
 
     .services-grid,
     .doctors-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
-        padding: 10px;
+        gap: 1.5rem;
     }
 
     .service-card,
     .doctor-card {
-        padding: 15px;
+        max-width: 100%;
+    }
+
+    .doctor-card img {
+        height: 250px;
     }
 
     .contact-form {
-        padding: 15px;
-    }
-
-    .contact-form input,
-    .contact-form textarea {
-        padding: 8px;
-        margin-bottom: 10px;
-    }
-
-    .footer {
-        padding: 20px 10px;
+        padding: 1.5rem;
     }
 
     .footer-content {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 2rem;
+        text-align: center;
     }
 
-    .section {
-        padding: 30px 10px;
+    .social-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.75rem;
     }
 
     .section-title {
-        font-size: 24px;
-        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    .service-card,
+    .doctor-card {
+        padding: 1rem;
+    }
+
+    .service-card h3,
+    .doctor-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .doctor-card img {
+        height: 200px;
+    }
+
+    .contact-form {
+        padding: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .service-card,
+    .doctor-card {
+        padding: 0.875rem;
+    }
+
+    .service-card h3,
+    .doctor-card h3 {
+        font-size: 1.125rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .service-card p,
+    .doctor-card p {
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+
+    .doctor-card img {
+        height: 180px;
+    }
+
+    .contact-info {
+        padding: 1rem;
+    }
+
+    .footer {
+        padding: 2rem 0;
+    }
+}
+
+@media (max-width: 320px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .hero-content {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .hero-content h1 {
+        font-size: 1.25rem;
+        line-height: 1.3;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .service-card,
+    .doctor-card {
+        padding: 0.75rem;
+    }
+
+    .service-card h3,
+    .doctor-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.375rem;
+    }
+
+    .service-card p,
+    .doctor-card p {
+        font-size: 0.8125rem;
+        line-height: 1.3;
+    }
+
+    .doctor-card img {
+        height: 160px;
+    }
+
+    .doctor-card .specialization {
+        font-size: 0.75rem;
+    }
+
+    .contact-form {
+        padding: 0.75rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 0.625rem;
+        font-size: 0.875rem;
+    }
+
+    .btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+    }
+
+    .footer-content {
+        gap: 1.5rem;
+    }
+
+    .footer-content h3 {
+        font-size: 1.125rem;
+    }
+
+    .footer-content p,
+    .footer-content a {
+        font-size: 0.875rem;
+    }
+
+    .social-links a {
+        width: 30px;
+        height: 30px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Service Details Specific Styles */
+.service-details {
+    padding: 2rem 0;
+}
+
+.service-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.service-details-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.service-details-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.service-details-info h2 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+.service-details-info p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.service-features li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.service-features li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+}
+
+/* Service Details Responsive */
+@media (max-width: 992px) {
+    .service-details-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .service-details-image {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-details {
+        padding: 1.5rem 0;
+    }
+
+    .service-details-image {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .service-details {
+        padding: 1rem 0;
+    }
+
+    .service-details-image {
+        height: 250px;
+    }
+
+    .service-details-info h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .service-details {
+        padding: 0.75rem 0;
+    }
+
+    .service-details-image {
+        height: 200px;
+    }
+
+    .service-details-info h2 {
+        font-size: 1.25rem;
+    }
+
+    .service-features li {
+        font-size: 0.875rem;
+        padding-left: 1.25rem;
+    }
+}
+
+/* Doctor Card Specific Improvements */
+.doctor-card {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-card img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 1rem;
+}
+
+.doctor-card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.doctor-card h3 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+}
+
+.doctor-specialization {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.doctor-description {
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.doctor-contact {
+    margin-top: auto;
+}
+
+.doctor-contact a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.doctor-contact a:hover {
+    background: var(--secondary-color);
+}
+
+/* Additional Responsive Fixes */
+@media (max-width: 1200px) {
+    .doctors-grid {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .doctor-card-content {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .doctor-card {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .doctor-card-content {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .doctor-card-content {
+        padding: 0.75rem;
+    }
+
+    .doctor-contact a {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
     }
 }
 
