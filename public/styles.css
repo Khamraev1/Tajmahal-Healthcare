@@ -1034,3 +1034,87 @@ footer {
         text-align: center;
     }
 }
+
+/* Responsive Styles */
+@media screen and (max-width: 320px) {
+    .header-content h1 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .header-content p {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+
+    .nav-links ul {
+        padding: 10px;
+    }
+
+    .nav-links li {
+        margin: 5px 0;
+    }
+
+    .services-grid,
+    .doctors-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .service-card,
+    .doctor-card {
+        padding: 15px;
+    }
+
+    .contact-form {
+        padding: 15px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .footer {
+        padding: 20px 10px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .section {
+        padding: 30px 10px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+}
+
+.hospital-info {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.hospital-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 320px) {
+    .hospital-info {
+        margin-top: 20px;
+    }
+
+    .hospital-info h2 {
+        font-size: 20px;
+    }
+}
