@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Tajmahal Healthcare</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .blog-section {
-            padding: 8rem 1rem 4rem;
+            padding: 8rem 2rem 4rem;
             background-color: var(--light-gray);
         }
 
@@ -27,7 +27,6 @@
 
         .blog-header h2 {
             color: var(--secondary-color);
-            font-size: 2.5rem;
             margin-bottom: 1rem;
         }
 
@@ -38,65 +37,61 @@
 
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .blog-card {
-            background-color: var(--white);
+            background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
 
         .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
         }
 
-        .blog-card-image {
+        .blog-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
         }
 
-        .blog-card-content {
+        .blog-content {
             padding: 1.5rem;
         }
 
-        .blog-card-date {
+        .blog-date {
+            color: var(--primary-color);
             font-size: 0.9rem;
-            color: #777;
             margin-bottom: 0.5rem;
         }
 
-        .blog-card-title {
-            font-size: 1.2rem;
+        .blog-title {
             color: var(--secondary-color);
             margin-bottom: 1rem;
-            line-height: 1.4;
+            font-size: 1.2rem;
         }
 
-        .blog-card-excerpt {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+        .blog-excerpt {
             color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.6;
         }
 
-        .blog-card-link {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: var(--primary-color);
-            color: var(--white);
-            border-radius: 5px;
+        .read-more {
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
-            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .blog-card-link:hover {
-            background-color: var(--secondary-color);
+        .read-more:hover {
+            color: var(--secondary-color);
         }
 
         .no-blogs {
@@ -115,11 +110,6 @@
             .blog-grid {
                 grid-template-columns: 1fr;
             }
-
-            .blog-card {
-                max-width: 400px;
-                margin: 0 auto;
-            }
         }
     </style>
 </head>
@@ -131,13 +121,14 @@
                 <h1>Tajmahal Healthcare</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="/#home">Bosh sahifa</a></li>
-                <li><a href="/#about">Biz haqimizda</a></li>
-                <li><a href="/#services">Xizmatlar</a></li>
-                <li><a href="/#doctors">Shifokorlar</a></li>
-                <li><a href="/#hospitals">Kasalxonalar</a></li>
-                <li><a href="/#contact">Aloqa</a></li>
-                <li><a href="/blog">Blog</a></li>
+                <li><a href="index.html">Bosh sahifa</a></li>
+                <li><a href="index.html#about">Biz haqimizda</a></li>
+                <li><a href="index.html#services">Xizmatlar</a></li>
+                <li><a href="index.html#doctors">Shifokorlar</a></li>
+                <li><a href="index.html#hospitals">Kasalxonalar</a></li>
+                <li><a href="index.html#contact">Aloqa</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="admin-login.html">Admin</a></li>
             </ul>
             <div class="mobile-menu">
                 <i class="fas fa-bars"></i>
@@ -149,7 +140,7 @@
         <section class="blog-section">
             <div class="blog-container">
                 <div class="blog-header">
-                    <h2>Blog</h2>
+                    <h2>Tibbiyot yangiliklari va maslahatlar</h2>
                     <p>Tibbiyot, sog'lik va davolanish haqida eng so'nggi yangiliklarimiz bilan tanishing</p>
                 </div>
 
@@ -169,13 +160,12 @@
             <div class="footer-section">
                 <h3>Tezkor havolalar</h3>
                 <ul>
-                    <li><a href="/#home">Bosh sahifa</a></li>
-                    <li><a href="/#about">Biz haqimizda</a></li>
-                    <li><a href="/#services">Xizmatlar</a></li>
-                    <li><a href="/#doctors">Shifokorlar</a></li>
-                    <li><a href="/#hospitals">Kasalxonalar</a></li>
-                    <li><a href="/#contact">Aloqa</a></li>
-                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="index.html">Bosh sahifa</a></li>
+                    <li><a href="index.html#about">Biz haqimizda</a></li>
+                    <li><a href="index.html#services">Xizmatlar</a></li>
+                    <li><a href="index.html#doctors">Shifokorlar</a></li>
+                    <li><a href="index.html#hospitals">Kasalxonalar</a></li>
+                    <li><a href="index.html#contact">Aloqa</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -196,7 +186,7 @@
         </div>
     </footer>
 
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
     <script>
         // Load blog posts
         async function loadBlogs() {
@@ -219,19 +209,24 @@
                 blogGrid.innerHTML = '';
 
                 blogs.forEach(blog => {
-                    const date = new Date(blog.createdAt).toLocaleDateString('uz-UZ');
+                    const date = new Date(blog.createdAt).toLocaleDateString('uz-UZ', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
                     const excerpt = blog.content.length > 150 ? blog.content.substring(0, 150) + '...' : blog.content;
 
                     blogGrid.innerHTML += `
-                        <div class="blog-card">
-                            ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-card-image">` : ''}
-                            <div class="blog-card-content">
-                                <p class="blog-card-date">${date} - ${blog.author}</p>
-                                <h3 class="blog-card-title">${blog.title}</h3>
-                                <p class="blog-card-excerpt">${excerpt}</p>
-                                <a href="/blog/${blog._id}" class="blog-card-link">Batafsil o'qish</a>
+                        <article class="blog-card">
+                            <img src="${blog.image || 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}" 
+                                alt="${blog.title}" class="blog-image">
+                            <div class="blog-content">
+                                <div class="blog-date">${date}</div>
+                                <h3 class="blog-title">${blog.title}</h3>
+                                <p class="blog-excerpt">${excerpt}</p>
+                                <a href="/blog/${blog._id}" class="read-more">Batafsil <i class="fas fa-arrow-right"></i></a>
                             </div>
-                        </div>
+                        </article>
                     `;
                 });
             } catch (error) {
@@ -247,6 +242,11 @@
 
         // Load blogs when page loads
         window.addEventListener('DOMContentLoaded', loadBlogs);
+
+        // Handle mobile menu
+        document.querySelector('.mobile-menu').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
     </script>
 </body>
 
