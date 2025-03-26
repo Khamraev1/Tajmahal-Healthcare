@@ -55,9 +55,8 @@ let mockDb = {
     serviceRequests: [],
     appointments: [],
     admins: [{
-        username: 'admin',
-        // Use plaintext password for testing only
-        password: 'admin123'
+        username: 'khamraev',
+        password: 'Asdf2004'
     }]
 };
 
@@ -589,20 +588,26 @@ app.delete('/api/blogs/:id', isAdmin, async (req, res) => {
     }
 });
 
-// Initialize admin user if not exists
+// Initialize admin user
 const initAdminUser = async () => {
     try {
-        const adminExists = await Admin.findOne({ username: 'admin' });
-        if (!adminExists) {
-            const hashedPassword = await bcrypt.hash('admin123', 10);
-            await Admin.create({
-                username: 'admin',
+        if (useMockDb) {
+            console.log('Using mock database with pre-configured admin user (username: khamraev)');
+            return;
+        }
+
+        const adminCount = await Admin.countDocuments();
+        if (adminCount === 0) {
+            const hashedPassword = await bcrypt.hash('Asdf2004', 10);
+            const admin = new Admin({
+                username: 'khamraev',
                 password: hashedPassword
             });
-            console.log('Admin user created successfully');
+            await admin.save();
+            console.log('Default admin user created');
         }
     } catch (error) {
-        console.error('Error initializing admin user:', error);
+        console.error('Error creating admin user:', error);
     }
 };
 
@@ -624,6 +629,6 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`Access the website at http://localhost:${PORT}`);
-    console.log(`Access the admin dashboard at http://localhost:${PORT}/admin/login (username: admin, password: admin123)`);
+    console.log(`Access the admin dashboard at http://localhost:${PORT}/admin/login`);
     initAdminUser();
 }); 
