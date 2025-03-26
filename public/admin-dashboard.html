@@ -269,6 +269,148 @@
         .delete-btn:hover {
             background-color: #c0392b;
         }
+
+        .dashboard {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 80px auto 0;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .add-blog-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .blog-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .blog-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .blog-item:last-child {
+            border-bottom: none;
+        }
+
+        .blog-image {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .blog-info h3 {
+            margin: 0;
+            color: var(--secondary-color);
+        }
+
+        .blog-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .blog-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .blog-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .blog-actions button.delete {
+            color: var(--accent-color);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .blog-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .blog-form input,
+        .blog-form textarea {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .blog-form button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #editor {
+            height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 
@@ -346,6 +488,23 @@
             </div>
         </section>
     </main>
+
+    <!-- Add/Edit Blog Modal -->
+    <div id="blog-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Yangi blog post</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="blog-form" class="blog-form">
+                <input type="hidden" id="blog-id">
+                <input type="text" id="title" placeholder="Sarlavha" required>
+                <input type="file" id="image" accept="image/*">
+                <div id="editor"></div>
+                <button type="submit">Saqlash</button>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Tab functionality
@@ -608,6 +767,97 @@
 
         // Load blogs on page load
         window.addEventListener('DOMContentLoaded', loadBlogs);
+
+        let quill;
+        let currentBlogId = null;
+
+        // Initialize Quill editor
+        document.addEventListener('DOMContentLoaded', function () {
+            quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            loadBlogs();
+
+            // Handle logout
+            document.getElementById('logout').addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('/api/admin/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                }).then(() => {
+                    window.location.href = '/admin-login.html';
+                });
+            });
+        });
+
+        // Open modal
+        function openModal() {
+            document.getElementById('blog-modal').classList.add('active');
+            document.getElementById('modal-title').textContent = 'Yangi blog post';
+            document.getElementById('blog-form').reset();
+            quill.setContents([]);
+            currentBlogId = null;
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('blog-modal').classList.remove('active');
+        }
+
+        // Edit blog
+        async function editBlog(id) {
+            try {
+                const response = await fetch(`/api/blogs/${id}`);
+                const blog = await response.json();
+
+                document.getElementById('blog-modal').classList.add('active');
+                document.getElementById('modal-title').textContent = 'Blogni tahrirlash';
+                document.getElementById('title').value = blog.title;
+                quill.root.innerHTML = blog.content;
+                currentBlogId = id;
+            } catch (error) {
+                console.error('Error loading blog:', error);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('blog-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('content', quill.root.innerHTML);
+
+            const imageFile = document.getElementById('image').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            try {
+                const url = currentBlogId ? `/api/blogs/${currentBlogId}` : '/api/blogs';
+                const method = currentBlogId ? 'PUT' : 'POST';
+
+                await fetch(url, {
+                    method: method,
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                closeModal();
+                loadBlogs();
+            } catch (error) {
+                console.error('Error saving blog:', error);
+            }
+        });
     </script>
 </body>
 

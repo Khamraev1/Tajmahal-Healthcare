@@ -214,7 +214,6 @@
                         month: 'long',
                         day: 'numeric'
                     });
-                    const excerpt = blog.content.length > 150 ? blog.content.substring(0, 150) + '...' : blog.content;
 
                     blogGrid.innerHTML += `
                         <article class="blog-card">
@@ -223,8 +222,10 @@
                             <div class="blog-content">
                                 <div class="blog-date">${date}</div>
                                 <h3 class="blog-title">${blog.title}</h3>
-                                <p class="blog-excerpt">${excerpt}</p>
-                                <a href="/blog/${blog._id}" class="read-more">Batafsil <i class="fas fa-arrow-right"></i></a>
+                                <p class="blog-excerpt">${blog.content.replace(/<[^>]*>/g, '').substring(0, 150)}...</p>
+                                <a href="/blog-detail.html?id=${blog._id}" class="read-more">
+                                    Batafsil <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>
                         </article>
                     `;

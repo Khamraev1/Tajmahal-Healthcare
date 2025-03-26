@@ -17,19 +17,17 @@
         }
 
         .blog-header {
+            text-align: center;
             margin-bottom: 2rem;
         }
 
         .blog-title {
             color: var(--secondary-color);
             margin-bottom: 1rem;
-            font-size: 2rem;
         }
 
         .blog-meta {
-            display: flex;
-            gap: 1rem;
-            color: var(--primary-color);
+            color: #666;
             font-size: 0.9rem;
             margin-bottom: 2rem;
         }
@@ -51,6 +49,13 @@
             margin-bottom: 1.5rem;
         }
 
+        .blog-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
         .back-to-blogs {
             display: inline-flex;
             align-items: center;
@@ -58,7 +63,6 @@
             color: var(--primary-color);
             text-decoration: none;
             margin-bottom: 2rem;
-            font-weight: 500;
         }
 
         .back-to-blogs:hover {
@@ -68,10 +72,6 @@
         @media (max-width: 768px) {
             .blog-detail {
                 padding: 6rem 1rem 2rem;
-            }
-
-            .blog-title {
-                font-size: 1.5rem;
             }
         }
     </style>
@@ -100,14 +100,14 @@
     </header>
 
     <main>
-        <article class="blog-detail">
+        <section class="blog-detail">
             <a href="/blog.html" class="back-to-blogs">
                 <i class="fas fa-arrow-left"></i> Orqaga
             </a>
-            <div id="blog-content">
-                <!-- Blog content will be loaded here -->
-            </div>
-        </article>
+            <article id="blog-content">
+                <div class="loading">Yuklanmoqda...</div>
+            </article>
+        </section>
     </main>
 
     <footer>
@@ -141,10 +141,13 @@
 
     <script>
         // Get blog ID from URL
-        const blogId = window.location.pathname.split('/').pop();
+        const urlParams = new URLSearchParams(window.location.search);
+        const blogId = urlParams.get('id');
 
         // Load blog post
         async function loadBlogPost() {
+            const blogContent = document.getElementById('blog-content');
+
             try {
                 const response = await fetch(`/api/blogs/${blogId}`);
                 const blog = await response.json();
@@ -155,35 +158,31 @@
                     day: 'numeric'
                 });
 
-                document.getElementById('blog-content').innerHTML = `
+                document.title = `${blog.title} - Tajmahal Healthcare`;
+
+                blogContent.innerHTML = `
                     <div class="blog-header">
                         <h1 class="blog-title">${blog.title}</h1>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> ${date}</span>
-                            <span><i class="far fa-user"></i> ${blog.author}</span>
-                        </div>
+                        <div class="blog-meta">${date}</div>
                     </div>
                     ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-image">` : ''}
                     <div class="blog-content">
                         ${blog.content}
                     </div>
                 `;
-
-                // Update page title
-                document.title = `${blog.title} - Tajmahal Healthcare`;
             } catch (error) {
                 console.error('Error loading blog post:', error);
-                document.getElementById('blog-content').innerHTML = `
-                    <div class="error-message">
-                        <h2>Blog post not found</h2>
-                        <p>The requested blog post could not be found.</p>
+                blogContent.innerHTML = `
+                    <div class="error">
+                        <h2>Xatolik yuz berdi</h2>
+                        <p>Blog postini yuklashda xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.</p>
                     </div>
                 `;
             }
         }
 
         // Load blog post when page loads
-        loadBlogPost();
+        window.addEventListener('DOMContentLoaded', loadBlogPost);
 
         // Handle mobile menu
         document.querySelector('.mobile-menu').addEventListener('click', function () {

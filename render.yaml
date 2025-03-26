@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: tajmahal-healthcare
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: PORT
+        value: 3005 
