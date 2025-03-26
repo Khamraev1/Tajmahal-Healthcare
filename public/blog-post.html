@@ -5,117 +5,229 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Post - Tajmahal Healthcare</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        .blog-post-section {
+            padding: 8rem 1rem 4rem;
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
+
         .blog-post-container {
             max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-        }
-
-        .blog-post-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .blog-post-title {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .blog-post-meta {
-            color: #666;
-            font-size: 0.875rem;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
 
         .blog-post-image {
             width: 100%;
-            max-height: 400px;
+            height: 400px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 2rem;
         }
 
         .blog-post-content {
-            line-height: 1.8;
-            color: #444;
+            padding: 2rem;
         }
 
-        .blog-post-content p {
+        .blog-post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: #666;
+            font-size: 0.95rem;
             margin-bottom: 1.5rem;
         }
 
-        .blog-post-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin: 1.5rem 0;
+        .blog-post-meta i {
+            color: var(--primary-color);
+        }
+
+        .blog-post-title {
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .blog-post-body {
+            color: #444;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .blog-post-body p {
+            margin-bottom: 1.5rem;
         }
 
         .back-to-blog {
-            display: inline-block;
-            color: #007bff;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
             text-decoration: none;
-            margin-top: 2rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
         }
 
         .back-to-blog:hover {
-            text-decoration: underline;
+            color: var(--secondary-color);
+            gap: 0.8rem;
         }
 
         .loading {
             text-align: center;
             padding: 2rem;
+            color: var(--primary-color);
             font-size: 1.2rem;
-            color: #666;
+        }
+
+        .error {
+            text-align: center;
+            padding: 2rem;
+            color: #dc3545;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-post-section {
+                padding: 6rem 1rem 2rem;
+            }
+
+            .blog-post-title {
+                font-size: 2rem;
+            }
+
+            .blog-post-image {
+                height: 250px;
+            }
+
+            .blog-post-content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="blog-post-container">
-        <div id="blogPost" class="loading">Loading...</div>
-    </div>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Tajmahal Healthcare</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/index.html">Bosh sahifa</a></li>
+                <li><a href="/index.html#about">Biz haqimizda</a></li>
+                <li><a href="/index.html#services">Xizmatlar</a></li>
+                <li><a href="/index.html#doctors">Shifokorlar</a></li>
+                <li><a href="/index.html#hospitals">Kasalxonalar</a></li>
+                <li><a href="/index.html#contact">Aloqa</a></li>
+                <li><a href="/blog.html" class="active">Blog</a></li>
+                <li><a href="/admin-login.html">Admin</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="blog-post-section">
+            <div class="blog-post-container">
+                <a href="/blog.html" class="back-to-blog">
+                    <i class="fas fa-arrow-left"></i> Blogga qaytish
+                </a>
+                <div id="blog-post-content">
+                    <div class="loading">Maqola yuklanmoqda...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tajmahal Healthcare</h3>
+                <p>Professional tibbiy xizmatlar va davolash imkoniyatlari</p>
+            </div>
+            <div class="footer-section">
+                <h3>Tezkor havolalar</h3>
+                <ul>
+                    <li><a href="/index.html">Bosh sahifa</a></li>
+                    <li><a href="/index.html#about">Biz haqimizda</a></li>
+                    <li><a href="/index.html#services">Xizmatlar</a></li>
+                    <li><a href="/index.html#doctors">Shifokorlar</a></li>
+                    <li><a href="/index.html#hospitals">Kasalxonalar</a></li>
+                    <li><a href="/index.html#contact">Aloqa</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Biz bilan bog'laning</h3>
+                <p><i class="fas fa-phone"></i> +91-888-242-4372</p>
+                <p><i class="fas fa-envelope"></i> info@tajmahalhealthcare.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Medical Street, New Delhi, India</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tajmahal Healthcare. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
 
     <script>
-        function loadBlogPost() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const blogId = urlParams.get('id');
+        // Handle mobile menu
+        document.querySelector('.mobile-menu').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
 
-            if (!blogId) {
-                window.location.href = '/blog.html';
-                return;
-            }
+        // Get blog post ID from URL
+        const blogId = window.location.pathname.split('/').pop();
 
-            fetch(`/api/blogs/${blogId}`)
-                .then(response => response.json())
-                .then(blog => {
-                    const blogPost = document.getElementById('blogPost');
-                    blogPost.innerHTML = `
-                        <div class="blog-post-header">
-                            <h1 class="blog-post-title">${blog.title}</h1>
-                            <div class="blog-post-meta">
-                                Published on ${new Date(blog.createdAt).toLocaleDateString()}
-                            </div>
+        // Load blog post
+        async function loadBlogPost() {
+            const blogPostContent = document.getElementById('blog-post-content');
+
+            try {
+                const response = await fetch(`/api/blogs/${blogId}`);
+                const blog = await response.json();
+
+                if (!blog) {
+                    throw new Error('Blog post not found');
+                }
+
+                document.title = `${blog.title} - Tajmahal Healthcare`;
+
+                blogPostContent.innerHTML = `
+                    ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-post-image">` : ''}
+                    <div class="blog-post-content">
+                        <div class="blog-post-meta">
+                            <span><i class="far fa-calendar"></i> ${new Date(blog.createdAt).toLocaleDateString()}</span>
+                            <span><i class="far fa-user"></i> ${blog.author}</span>
                         </div>
-                        ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-post-image">` : ''}
-                        <div class="blog-post-content">
+                        <h1 class="blog-post-title">${blog.title}</h1>
+                        <div class="blog-post-body">
                             ${blog.content}
                         </div>
-                        <a href="/blog.html" class="back-to-blog">← Back to Blog</a>
-                    `;
-                })
-                .catch(error => {
-                    console.error('Error loading blog post:', error);
-                    document.getElementById('blogPost').innerHTML = `
-                        <div class="error-message">
-                            <h2>Error Loading Blog Post</h2>
-                            <p>Sorry, there was an error loading this blog post. Please try again later.</p>
-                            <a href="/blog.html" class="back-to-blog">← Back to Blog</a>
-                        </div>
-                    `;
-                });
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading blog post:', error);
+                blogPostContent.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>Maqolani yuklashda xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.</p>
+                    </div>
+                `;
+            }
         }
 
         // Load blog post when page loads
