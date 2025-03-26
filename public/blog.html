@@ -47,6 +47,8 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .blog-card:hover {
@@ -62,6 +64,9 @@
 
         .blog-content {
             padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .blog-meta {
@@ -88,6 +93,7 @@
             color: #666;
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            flex-grow: 1;
         }
 
         .read-more {
@@ -98,6 +104,8 @@
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            margin-top: auto;
         }
 
         .read-more:hover {
@@ -168,12 +176,12 @@
     <main>
         <section class="blog-section">
             <div class="blog-header">
-                <h1>Our Blog</h1>
-                <p>Stay updated with the latest healthcare news, tips, and insights from our medical experts.</p>
+                <h1>Bizning Blog</h1>
+                <p>Shifokorlarimizdan so'nggi sog'liqni saqlash yangiliklarini, maslahatlarini va fikrlarini o'qing.</p>
             </div>
 
             <div class="blog-grid" id="blog-grid">
-                <div class="loading">Loading blog posts...</div>
+                <div class="loading">Blog yozuvlari yuklanmoqda...</div>
             </div>
         </section>
     </main>
@@ -232,7 +240,7 @@
                     blogGrid.innerHTML = `
                         <div class="no-blogs">
                             <i class="fas fa-newspaper" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
-                            <p>No blog posts available at the moment.</p>
+                            <p>Hozircha blog yozuvlari mavjud emas.</p>
                         </div>
                     `;
                     return;
@@ -249,7 +257,7 @@
                             <h2 class="blog-title">${blog.title}</h2>
                             <p class="blog-excerpt">${blog.excerpt || blog.content.substring(0, 150)}...</p>
                             <a href="/blog/${blog._id}" class="read-more">
-                                Read More <i class="fas fa-arrow-right"></i>
+                                Batafsil <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                     </article>
@@ -259,7 +267,7 @@
                 blogGrid.innerHTML = `
                     <div class="error">
                         <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>Error loading blog posts. Please try again later.</p>
+                        <p>Blog yozuvlarini yuklashda xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.</p>
                     </div>
                 `;
             }
