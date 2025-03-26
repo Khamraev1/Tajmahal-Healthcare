@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Tajmahal Healthcare</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .blog-section {
+            padding: 8rem 1rem 4rem;
+            background-color: var(--light-gray);
+        }
+
+        .blog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .blog-header h2 {
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-header p {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-card-content {
+            padding: 1.5rem;
+        }
+
+        .blog-card-date {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-card-title {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .blog-card-excerpt {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .blog-card-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .blog-card-link:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .no-blogs {
+            text-align: center;
+            padding: 3rem;
+            background-color: var(--white);
+            border-radius: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Tajmahal Healthcare</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/#home">Bosh sahifa</a></li>
+                <li><a href="/#about">Biz haqimizda</a></li>
+                <li><a href="/#services">Xizmatlar</a></li>
+                <li><a href="/#doctors">Shifokorlar</a></li>
+                <li><a href="/#hospitals">Kasalxonalar</a></li>
+                <li><a href="/#contact">Aloqa</a></li>
+                <li><a href="/blog">Blog</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="blog-section">
+            <div class="blog-container">
+                <div class="blog-header">
+                    <h2>Blog</h2>
+                    <p>Tibbiyot, sog'lik va davolanish haqida eng so'nggi yangiliklarimiz bilan tanishing</p>
+                </div>
+
+                <div id="blog-grid" class="blog-grid">
+                    <div class="loading">Yuklanmoqda...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tajmahal Healthcare</h3>
+                <p>Professional tibbiy xizmatlar va davolash imkoniyatlari</p>
+            </div>
+            <div class="footer-section">
+                <h3>Tezkor havolalar</h3>
+                <ul>
+                    <li><a href="/#home">Bosh sahifa</a></li>
+                    <li><a href="/#about">Biz haqimizda</a></li>
+                    <li><a href="/#services">Xizmatlar</a></li>
+                    <li><a href="/#doctors">Shifokorlar</a></li>
+                    <li><a href="/#hospitals">Kasalxonalar</a></li>
+                    <li><a href="/#contact">Aloqa</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Biz bilan bog'laning</h3>
+                <p><i class="fas fa-phone"></i> +91-888-242-4372</p>
+                <p><i class="fas fa-envelope"></i> info@tajmahalhealthcare.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Medical Street, New Delhi, India</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tajmahal Healthcare. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+    <script>
+        // Load blog posts
+        async function loadBlogs() {
+            const blogGrid = document.getElementById('blog-grid');
+
+            try {
+                const response = await fetch('/api/blogs');
+                const blogs = await response.json();
+
+                if (blogs.length === 0) {
+                    blogGrid.innerHTML = `
+                        <div class="no-blogs">
+                            <h3>Hozircha blog postlari mavjud emas</h3>
+                            <p>Tez orada yangi ma'lumotlar bilan qaytamiz</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                blogGrid.innerHTML = '';
+
+                blogs.forEach(blog => {
+                    const date = new Date(blog.createdAt).toLocaleDateString('uz-UZ');
+                    const excerpt = blog.content.length > 150 ? blog.content.substring(0, 150) + '...' : blog.content;
+
+                    blogGrid.innerHTML += `
+                        <div class="blog-card">
+                            ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-card-image">` : ''}
+                            <div class="blog-card-content">
+                                <p class="blog-card-date">${date} - ${blog.author}</p>
+                                <h3 class="blog-card-title">${blog.title}</h3>
+                                <p class="blog-card-excerpt">${excerpt}</p>
+                                <a href="/blog/${blog._id}" class="blog-card-link">Batafsil o'qish</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading blogs:', error);
+                blogGrid.innerHTML = `
+                    <div class="no-blogs">
+                        <h3>Blog postlarini yuklashda xatolik yuz berdi</h3>
+                        <p>Iltimos, keyinroq qayta urinib ko'ring</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load blogs when page loads
+        window.addEventListener('DOMContentLoaded', loadBlogs);
+    </script>
+</body>
+
+</html>

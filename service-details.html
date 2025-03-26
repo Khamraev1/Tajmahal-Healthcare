@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xizmat Ma'lumotlari - Tajmahal Healthcare</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Tajmahal Healthcare</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Bosh sahifa</a></li>
+                <li><a href="index.html#about">Biz haqimizda</a></li>
+                <li><a href="index.html#services">Xizmatlar</a></li>
+                <li><a href="index.html#doctors">Shifokorlar</a></li>
+                <li><a href="index.html#hospitals">Kasalxonalar</a></li>
+                <li><a href="index.html#contact">Aloqa</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="service-details">
+            <div class="service-details-container">
+                <div class="service-profile">
+                    <img src="" alt="" class="service-detail-image" id="service-image">
+                    <div class="service-info">
+                        <h1 id="service-name"></h1>
+                        <div class="service-stats">
+                            <div class="stat">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <p id="service-availability"></p>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-hospital"></i>
+                                <div>
+                                    <p id="service-locations"></p>
+                                </div>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <p id="service-price-range"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-description">
+                    <h2>Ma'lumot</h2>
+                    <p id="service-description"></p>
+                </div>
+
+                <div class="service-benefits">
+                    <h2>Afzalliklar</h2>
+                    <ul id="service-benefits"></ul>
+                </div>
+
+                <div class="service-process">
+                    <h2>Jarayon</h2>
+                    <div id="service-process-steps" class="process-steps"></div>
+                </div>
+
+                <div class="service-faq">
+                    <h2>Ko'p so'raladigan savollar</h2>
+                    <div id="service-faq-items" class="faq-items"></div>
+                </div>
+
+                <div class="appointment-section">
+                    <h2>Xizmat uchun ariza yuborish</h2>
+                    <form id="service-form" class="appointment-form">
+                        <input type="text" name="name" placeholder="To'liq ismingiz" required>
+                        <input type="email" name="email" placeholder="Email manzilingiz" required>
+                        <input type="tel" name="phone" placeholder="Telefon raqamingiz" required>
+                        <input type="hidden" name="service" id="service-form-name">
+                        <textarea name="message" placeholder="Xabaringiz" required></textarea>
+                        <button type="submit">Ariza yuborish</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tajmahal Healthcare</h3>
+                <p>Professional tibbiy xizmatlar va davolash imkoniyatlari</p>
+            </div>
+            <div class="footer-section">
+                <h3>Tezkor havolalar</h3>
+                <ul>
+                    <li><a href="index.html#home">Bosh sahifa</a></li>
+                    <li><a href="index.html#about">Biz haqimizda</a></li>
+                    <li><a href="index.html#services">Xizmatlar</a></li>
+                    <li><a href="index.html#doctors">Shifokorlar</a></li>
+                    <li><a href="index.html#hospitals">Kasalxonalar</a></li>
+                    <li><a href="index.html#contact">Aloqa</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Biz bilan bog'laning</h3>
+                <p><i class="fas fa-phone"></i> +91-888-242-4372</p>
+                <p><i class="fas fa-envelope"></i> info@tajmahalhealthcare.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Medical Street, New Delhi, India</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tajmahal Healthcare. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="service-details.js"></script>
+</body>
+
+</html>

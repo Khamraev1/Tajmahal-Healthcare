@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shifokor Ma'lumotlari - Tajmahal Healthcare</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+                    alt="Tajmahal Healthcare Logo" class="logo-img">
+                <h1>Tajmahal Healthcare</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Bosh sahifa</a></li>
+                <li><a href="index.html#about">Biz haqimizda</a></li>
+                <li><a href="index.html#services">Xizmatlar</a></li>
+                <li><a href="index.html#doctors">Shifokorlar</a></li>
+                <li><a href="index.html#hospitals">Kasalxonalar</a></li>
+                <li><a href="index.html#contact">Aloqa</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="doctor-details">
+            <div class="doctor-details-container">
+                <div class="doctor-profile">
+                    <img src="" alt="" id="doctor-image" class="doctor-detail-image">
+                    <div class="doctor-info">
+                        <h1 id="doctor-name"></h1>
+                        <p id="doctor-specialty" class="specialty"></p>
+                        <div class="doctor-stats">
+                            <div class="stat">
+                                <i class="fas fa-user-md"></i>
+                                <span id="doctor-experience"></span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-hospital"></i>
+                                <span id="doctor-hospital"></span>
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-language"></i>
+                                <span id="doctor-languages"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="doctor-description">
+                    <h2>Shifokor haqida</h2>
+                    <p id="doctor-description"></p>
+                </div>
+                <div class="doctor-education">
+                    <h2>Ta'lim</h2>
+                    <ul id="doctor-education"></ul>
+                </div>
+                <div class="doctor-specializations">
+                    <h2>Mutaxassislik yo'nalishlari</h2>
+                    <ul id="doctor-specializations"></ul>
+                </div>
+                <div class="doctor-schedule">
+                    <h2>Ish jadvali</h2>
+                    <div id="doctor-schedule"></div>
+                </div>
+                <div class="appointment-section">
+                    <h2>Konsultatsiya uchun yozilish</h2>
+                    <form id="appointment-form" class="appointment-form">
+                        <input type="text" placeholder="Ismingiz" required>
+                        <input type="tel" placeholder="Telefon raqami" required>
+                        <input type="email" placeholder="Email" required>
+                        <input type="date" required>
+                        <textarea placeholder="Qo'shimcha ma'lumotlar" required></textarea>
+                        <button type="submit">Yozilish</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tajmahal Healthcare</h3>
+                <p>Professional tibbiy xizmatlar va davolash imkoniyatlari</p>
+            </div>
+            <div class="footer-section">
+                <h3>Tezkor havolalar</h3>
+                <ul>
+                    <li><a href="index.html">Bosh sahifa</a></li>
+                    <li><a href="index.html#about">Biz haqimizda</a></li>
+                    <li><a href="index.html#services">Xizmatlar</a></li>
+                    <li><a href="index.html#doctors">Shifokorlar</a></li>
+                    <li><a href="index.html#hospitals">Kasalxonalar</a></li>
+                    <li><a href="index.html#contact">Aloqa</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ish vaqti</h3>
+                <p>Dushanba - Juma: 9:00 - 18:00</p>
+                <p>Shanba: 9:00 - 14:00</p>
+                <p>Yakshanba: Dam olish kuni</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tajmahal Healthcare. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script src="doctor-details.js"></script>
+</body>
+
+</html>
