@@ -95,6 +95,7 @@
                 <li><a href="index.html#hospitals">Kasalxonalar</a></li>
                 <li><a href="index.html#contact">Aloqa</a></li>
                 <li><a href="blog.html">Blog</a></li>
+                <li><a href="admin-login.html" class="active">Admin</a></li>
             </ul>
             <div class="mobile-menu">
                 <i class="fas fa-bars"></i>
@@ -119,31 +120,22 @@
         </section>
     </main>
 
-    <script src="script.js"></script>
     <script>
-        document.getElementById('login-form').addEventListener('submit', async function (e) {
+        // Handle mobile menu
+        document.querySelector('.mobile-menu').addEventListener('click', function () {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Handle login form
+        document.getElementById('login-form').addEventListener('submit', function (e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            try {
-                const response = await fetch('/api/admin/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    window.location.href = '/admin/dashboard';
-                } else {
-                    document.getElementById('error-message').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Error during login:', error);
+            // For demo purposes only
+            if (username === 'admin' && password === 'admin123') {
+                window.location.href = 'admin-dashboard.html';
+            } else {
                 document.getElementById('error-message').style.display = 'block';
             }
         });
