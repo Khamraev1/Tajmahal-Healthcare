@@ -507,6 +507,19 @@
     </div>
 
     <script>
+        // Check authentication
+        fetch('/api/check-auth')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.isAdmin) {
+                    window.location.href = '/admin-login.html';
+                }
+            })
+            .catch(error => {
+                console.error('Auth check failed:', error);
+                window.location.href = '/admin-login.html';
+            });
+
         // Tab functionality
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -534,41 +547,6 @@
             });
         });
 
-        // Blog form submission
-        const blogForm = document.getElementById('blog-form');
-        blogForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(blogForm);
-
-            try {
-                const response = await fetch('/admin/blog', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    document.getElementById('blog-success').style.display = 'block';
-                    blogForm.reset();
-
-                    // Hide success message after 3 seconds
-                    setTimeout(() => {
-                        document.getElementById('blog-success').style.display = 'none';
-                    }, 3000);
-
-                    // Load blogs
-                    loadBlogs();
-                } else {
-                    alert('Error creating blog post: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error creating blog post:', error);
-                alert('Error creating blog post');
-            }
-        });
-
         // Load blog posts
         async function loadBlogs() {
             const blogList = document.getElementById('blog-list');
@@ -583,67 +561,147 @@
                     return;
                 }
 
-                blogList.innerHTML = '';
-
-                blogs.forEach(blog => {
-                    const date = new Date(blog.createdAt).toLocaleDateString('uz-UZ');
-                    const excerpt = blog.content.length > 150 ? blog.content.substring(0, 150) + '...' : blog.content;
-
-                    blogList.innerHTML += `
-                        <div class="blog-item" data-id="${blog._id}">
-                            ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-item-image">` : ''}
-                            <div class="blog-item-content">
-                                <h4 class="blog-item-title">${blog.title}</h4>
-                                <p class="blog-item-date">${date} - ${blog.author}</p>
-                                <p class="blog-item-excerpt">${excerpt}</p>
-                                <div class="blog-item-actions">
-                                    <a href="/blog/${blog._id}" target="_blank" class="view-btn">View Blog</a>
-                                    <button class="delete-btn" onclick="deleteBlog('${blog._id}')">Delete</button>
-                                </div>
+                blogList.innerHTML = blogs.map(blog => `
+                    <div class="blog-item" data-id="${blog._id}">
+                        ${blog.image ? `<img src="${blog.image}" alt="${blog.title}" class="blog-item-image">` : ''}
+                        <div class="blog-item-content">
+                            <h4 class="blog-item-title">${blog.title}</h4>
+                            <p class="blog-item-date">${new Date(blog.createdAt).toLocaleDateString()} - ${blog.author}</p>
+                            <p class="blog-item-excerpt">${blog.content.substring(0, 150)}...</p>
+                            <div class="blog-item-actions">
+                                <button class="edit-btn" onclick="editBlog('${blog._id}')">Edit</button>
+                                <button class="delete-btn" onclick="deleteBlog('${blog._id}')">Delete</button>
                             </div>
                         </div>
-                    `;
-                });
+                    </div>
+                `).join('');
             } catch (error) {
                 console.error('Error loading blogs:', error);
                 blogList.innerHTML = '<p>Error loading blog posts.</p>';
             }
         }
 
-        // Delete blog function
-        async function deleteBlog(blogId) {
-            if (!confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
+        // Handle blog form submission
+        document.getElementById('blog-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const successMessage = document.getElementById('blog-success');
+
+            try {
+                const response = await fetch('/api/blogs', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    successMessage.style.display = 'block';
+                    this.reset();
+                    loadBlogs();
+
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Error creating blog post: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error creating blog post:', error);
+                alert('Error creating blog post');
+            }
+        });
+
+        // Edit blog
+        async function editBlog(id) {
+            try {
+                const response = await fetch(`/api/blogs/${id}`);
+                const blog = await response.json();
+
+                document.getElementById('blog-title').value = blog.title;
+                document.getElementById('blog-content').value = blog.content;
+                document.getElementById('blog-id').value = blog._id;
+
+                // Switch to create blog tab
+                document.querySelector('[data-tab="create-blog"]').click();
+            } catch (error) {
+                console.error('Error loading blog:', error);
+                alert('Error loading blog post');
+            }
+        }
+
+        // Delete blog
+        async function deleteBlog(id) {
+            if (!confirm('Are you sure you want to delete this blog post?')) {
                 return;
             }
 
             try {
-                const response = await fetch(`/api/blogs/${blogId}`, {
+                const response = await fetch(`/api/blogs/${id}`, {
                     method: 'DELETE'
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    // Remove the blog item from the DOM
-                    const blogItem = document.querySelector(`.blog-item[data-id="${blogId}"]`);
-                    if (blogItem) {
-                        blogItem.remove();
-                    }
-                    // Show success message
-                    alert('Blog post deleted successfully');
-
-                    // If no more blogs, show "no blogs" message
-                    const blogList = document.getElementById('blog-list');
-                    if (!blogList.querySelector('.blog-item')) {
-                        blogList.innerHTML = '<p>No blog posts yet.</p>';
-                    }
+                    loadBlogs();
                 } else {
                     alert('Error deleting blog post: ' + data.message);
                 }
             } catch (error) {
-                console.error('Error deleting blog post:', error);
+                console.error('Error deleting blog:', error);
                 alert('Error deleting blog post');
             }
+        }
+
+        // Handle logout
+        document.querySelector('.logout-btn').addEventListener('click', async function (e) {
+            e.preventDefault();
+            try {
+                await fetch('/api/admin/logout', {
+                    method: 'POST'
+                });
+                window.location.href = '/admin-login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        // Load blogs on page load
+        window.addEventListener('DOMContentLoaded', loadBlogs);
+
+        let quill;
+        let currentBlogId = null;
+
+        // Initialize Quill editor
+        document.addEventListener('DOMContentLoaded', function () {
+            quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            loadBlogs();
+        });
+
+        // Open modal
+        function openModal() {
+            document.getElementById('blog-modal').classList.add('active');
+            document.getElementById('modal-title').textContent = 'Yangi blog post';
+            document.getElementById('blog-form').reset();
+            quill.setContents([]);
+            currentBlogId = null;
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('blog-modal').classList.remove('active');
         }
 
         // Load contacts
@@ -764,100 +822,6 @@
                 appointmentList.innerHTML = '<p>Error loading appointment requests.</p>';
             }
         }
-
-        // Load blogs on page load
-        window.addEventListener('DOMContentLoaded', loadBlogs);
-
-        let quill;
-        let currentBlogId = null;
-
-        // Initialize Quill editor
-        document.addEventListener('DOMContentLoaded', function () {
-            quill = new Quill('#editor', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        ['bold', 'italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        ['link', 'image'],
-                        ['clean']
-                    ]
-                }
-            });
-
-            loadBlogs();
-
-            // Handle logout
-            document.getElementById('logout').addEventListener('click', function (e) {
-                e.preventDefault();
-                fetch('/api/admin/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                }).then(() => {
-                    window.location.href = '/admin-login.html';
-                });
-            });
-        });
-
-        // Open modal
-        function openModal() {
-            document.getElementById('blog-modal').classList.add('active');
-            document.getElementById('modal-title').textContent = 'Yangi blog post';
-            document.getElementById('blog-form').reset();
-            quill.setContents([]);
-            currentBlogId = null;
-        }
-
-        // Close modal
-        function closeModal() {
-            document.getElementById('blog-modal').classList.remove('active');
-        }
-
-        // Edit blog
-        async function editBlog(id) {
-            try {
-                const response = await fetch(`/api/blogs/${id}`);
-                const blog = await response.json();
-
-                document.getElementById('blog-modal').classList.add('active');
-                document.getElementById('modal-title').textContent = 'Blogni tahrirlash';
-                document.getElementById('title').value = blog.title;
-                quill.root.innerHTML = blog.content;
-                currentBlogId = id;
-            } catch (error) {
-                console.error('Error loading blog:', error);
-            }
-        }
-
-        // Handle form submission
-        document.getElementById('blog-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const formData = new FormData();
-            formData.append('title', document.getElementById('title').value);
-            formData.append('content', quill.root.innerHTML);
-
-            const imageFile = document.getElementById('image').files[0];
-            if (imageFile) {
-                formData.append('image', imageFile);
-            }
-
-            try {
-                const url = currentBlogId ? `/api/blogs/${currentBlogId}` : '/api/blogs';
-                const method = currentBlogId ? 'PUT' : 'POST';
-
-                await fetch(url, {
-                    method: method,
-                    body: formData,
-                    credentials: 'include'
-                });
-
-                closeModal();
-                loadBlogs();
-            } catch (error) {
-                console.error('Error saving blog:', error);
-            }
-        });
     </script>
 </body>
 

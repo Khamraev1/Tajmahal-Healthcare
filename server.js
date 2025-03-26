@@ -181,12 +181,12 @@ const sendEmail = async (to, subject, text) => {
     }
 };
 
-// Middleware to check if user is admin
+// Admin authentication middleware
 const isAdmin = (req, res, next) => {
-    if (req.session.isAdmin) {
+    if (req.session && req.session.isAdmin) {
         next();
     } else {
-        res.status(401).json({ success: false, message: 'Unauthorized' });
+        res.status(401).json({ message: 'Unauthorized' });
     }
 };
 
@@ -362,8 +362,12 @@ app.post('/api/appointment', async (req, res) => {
 // Blog routes
 app.get('/api/blogs', async (req, res) => {
     try {
-        const blogs = await Blog.find().sort({ createdAt: -1 });
-        res.json(blogs);
+        if (useMockDb) {
+            res.json(mockDb.blogs);
+        } else {
+            const blogs = await Blog.find().sort({ createdAt: -1 });
+            res.json(blogs);
+        }
     } catch (error) {
         console.error('Error fetching blogs:', error);
         res.status(500).json({ message: 'Error fetching blogs' });
@@ -372,87 +376,38 @@ app.get('/api/blogs', async (req, res) => {
 
 app.get('/api/blogs/:id', async (req, res) => {
     try {
-        const blog = await Blog.findById(req.params.id);
-        if (!blog) {
-            return res.status(404).json({ message: 'Blog not found' });
+        const blogId = req.params.id;
+        if (useMockDb) {
+            const blog = mockDb.blogs.find(b => b._id === blogId);
+            if (!blog) {
+                return res.status(404).json({ message: 'Blog not found' });
+            }
+            res.json(blog);
+        } else {
+            const blog = await Blog.findById(blogId);
+            if (!blog) {
+                return res.status(404).json({ message: 'Blog not found' });
+            }
+            res.json(blog);
         }
-        res.json(blog);
     } catch (error) {
         console.error('Error fetching blog:', error);
         res.status(500).json({ message: 'Error fetching blog' });
     }
 });
 
-// Admin routes
-app.get('/admin/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin-login.html'));
-});
-
-app.post('/admin/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        console.log('Login attempt:', username);
-
-        // Find admin user
-        let admin;
-        if (useMockDb) {
-            admin = mockDb.admins.find(a => a.username === username);
-            console.log('Using mock DB, found admin:', admin ? 'yes' : 'no');
-        } else {
-            admin = await Admin.findOne({ username });
-        }
-
-        if (!admin) {
-            console.log('Admin not found');
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
-        }
-
-        // Compare password
-        console.log('Admin found, comparing passwords');
-        let isMatch = false;
-
-        if (useMockDb) {
-            // For mock DB, directly compare passwords (only for testing)
-            isMatch = password === admin.password;
-        } else {
-            // For real DB, use bcrypt
-            isMatch = await bcrypt.compare(password, admin.password);
-        }
-        console.log('Password match:', isMatch);
-
-        if (!isMatch) {
-            console.log('Password does not match');
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
-        }
-
-        // Set session
-        req.session.isAdmin = true;
-        req.session.username = admin.username;
-        console.log('Login successful, setting session');
-
-        res.status(200).json({ success: true, redirect: '/admin/dashboard' });
-    } catch (error) {
-        console.error('Error during login:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-});
-
-app.get('/admin/dashboard', isAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin-dashboard.html'));
-});
-
-app.post('/admin/blog', isAdmin, upload.single('image'), async (req, res) => {
+app.post('/api/blogs', isAdmin, upload.single('image'), async (req, res) => {
     try {
         const { title, content } = req.body;
+        const image = req.file ? `/uploads/${req.file.filename}` : null;
 
-        // Create new blog
         if (useMockDb) {
             const newBlog = {
                 _id: Date.now().toString(),
                 title,
                 content,
                 author: req.session.username,
-                image: req.file ? `/uploads/${req.file.filename}` : null,
+                image,
                 createdAt: new Date()
             };
             mockDb.blogs.push(newBlog);
@@ -461,16 +416,100 @@ app.post('/admin/blog', isAdmin, upload.single('image'), async (req, res) => {
                 title,
                 content,
                 author: req.session.username,
-                image: req.file ? `/uploads/${req.file.filename}` : null
+                image
             });
             await newBlog.save();
         }
 
-        res.status(200).json({ success: true, message: 'Blog post created successfully' });
+        res.status(201).json({ success: true, message: 'Blog post created successfully' });
     } catch (error) {
         console.error('Error creating blog post:', error);
         res.status(500).json({ success: false, message: 'Error creating blog post' });
     }
+});
+
+app.put('/api/blogs/:id', isAdmin, upload.single('image'), async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const { title, content } = req.body;
+        const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+        if (useMockDb) {
+            const index = mockDb.blogs.findIndex(b => b._id === blogId);
+            if (index === -1) {
+                return res.status(404).json({ message: 'Blog not found' });
+            }
+            mockDb.blogs[index] = {
+                ...mockDb.blogs[index],
+                title,
+                content,
+                image: image || mockDb.blogs[index].image
+            };
+        } else {
+            const blog = await Blog.findById(blogId);
+            if (!blog) {
+                return res.status(404).json({ message: 'Blog not found' });
+            }
+            blog.title = title;
+            blog.content = content;
+            if (image) {
+                blog.image = image;
+            }
+            await blog.save();
+        }
+
+        res.json({ success: true, message: 'Blog post updated successfully' });
+    } catch (error) {
+        console.error('Error updating blog post:', error);
+        res.status(500).json({ success: false, message: 'Error updating blog post' });
+    }
+});
+
+// Admin routes
+app.get('/admin', isAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+app.get('/admin-dashboard', isAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin-dashboard.html'));
+});
+
+app.post('/api/admin/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        if (useMockDb) {
+            const admin = mockDb.admins.find(a => a.username === username && a.password === password);
+            if (admin) {
+                req.session.isAdmin = true;
+                req.session.username = username;
+                res.json({ success: true });
+            } else {
+                res.status(401).json({ success: false, message: 'Invalid credentials' });
+            }
+        } else {
+            const admin = await Admin.findOne({ username, password });
+            if (admin) {
+                req.session.isAdmin = true;
+                req.session.username = username;
+                res.json({ success: true });
+            } else {
+                res.status(401).json({ success: false, message: 'Invalid credentials' });
+            }
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+app.post('/api/admin/logout', (req, res) => {
+    req.session.destroy();
+    res.json({ success: true });
+});
+
+app.get('/api/check-auth', (req, res) => {
+    res.json({ isAdmin: req.session && req.session.isAdmin });
 });
 
 app.get('/admin/contacts', isAdmin, async (req, res) => {
@@ -516,11 +555,6 @@ app.get('/admin/appointments', isAdmin, async (req, res) => {
         console.error('Error fetching appointments:', error);
         res.status(500).json({ success: false, message: 'Error fetching appointments' });
     }
-});
-
-app.get('/admin/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/admin/login');
 });
 
 // Delete blog post
