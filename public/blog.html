@@ -252,11 +252,11 @@
                         <div class="blog-content">
                             <div class="blog-meta">
                                 <span><i class="far fa-calendar"></i> ${new Date(blog.createdAt).toLocaleDateString()}</span>
-                                <span><i class="far fa-user"></i> ${blog.author}</span>
+                                <span><i class="far fa-user"></i> ${blog.author || 'Admin'}</span>
                             </div>
                             <h2 class="blog-title">${blog.title}</h2>
                             <p class="blog-excerpt">${blog.excerpt || blog.content.substring(0, 150)}...</p>
-                            <a href="/blog/${blog._id}" class="read-more">
+                            <a href="/blog-post.html?id=${blog._id}" class="read-more">
                                 Batafsil <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>

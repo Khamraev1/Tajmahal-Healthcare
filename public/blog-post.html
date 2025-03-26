@@ -70,7 +70,7 @@
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
-            margin-bottom: 2rem;
+            margin: 2rem;
             transition: all 0.3s ease;
         }
 
@@ -91,6 +91,9 @@
             padding: 2rem;
             color: #dc3545;
             font-size: 1.2rem;
+            background: #ffebee;
+            border-radius: 10px;
+            margin: 2rem;
         }
 
         @media (max-width: 768px) {
@@ -190,7 +193,8 @@
         });
 
         // Get blog post ID from URL
-        const blogId = window.location.pathname.split('/').pop();
+        const urlParams = new URLSearchParams(window.location.search);
+        const blogId = urlParams.get('id');
 
         // Load blog post
         async function loadBlogPost() {
@@ -198,11 +202,12 @@
 
             try {
                 const response = await fetch(`/api/blogs/${blogId}`);
-                const blog = await response.json();
 
-                if (!blog) {
+                if (!response.ok) {
                     throw new Error('Blog post not found');
                 }
+
+                const blog = await response.json();
 
                 document.title = `${blog.title} - Tajmahal Healthcare`;
 
@@ -211,7 +216,7 @@
                     <div class="blog-post-content">
                         <div class="blog-post-meta">
                             <span><i class="far fa-calendar"></i> ${new Date(blog.createdAt).toLocaleDateString()}</span>
-                            <span><i class="far fa-user"></i> ${blog.author}</span>
+                            <span><i class="far fa-user"></i> ${blog.author || 'Admin'}</span>
                         </div>
                         <h1 class="blog-post-title">${blog.title}</h1>
                         <div class="blog-post-body">
@@ -224,14 +229,19 @@
                 blogPostContent.innerHTML = `
                     <div class="error">
                         <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>Maqolani yuklashda xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.</p>
+                        <p>Maqolani yuklashda xatolik yuz berdi yoki maqola topilmadi.</p>
+                        <p>Iltimos, keyinroq qayta urinib ko'ring.</p>
                     </div>
                 `;
             }
         }
 
         // Load blog post when page loads
-        window.addEventListener('DOMContentLoaded', loadBlogPost);
+        if (blogId) {
+            loadBlogPost();
+        } else {
+            window.location.href = '/blog.html';
+        }
     </script>
 </body>
 
