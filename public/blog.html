@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -10,42 +10,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
-        .blog-section {
-            padding: 8rem 2rem 4rem;
-            background-color: var(--light-gray);
-        }
-
         .blog-container {
             max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .blog-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .blog-header h2 {
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .blog-header p {
-            max-width: 700px;
-            margin: 0 auto;
+            margin: 2rem auto;
+            padding: 2rem;
         }
 
         .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 2rem;
         }
 
         .blog-card {
-            background: white;
-            border-radius: 10px;
+            background: #fff;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
 
@@ -63,53 +45,50 @@
             padding: 1.5rem;
         }
 
-        .blog-date {
-            color: var(--primary-color);
-            font-size: 0.9rem;
+        .blog-title {
+            font-size: 1.25rem;
             margin-bottom: 0.5rem;
+            color: #333;
         }
 
-        .blog-title {
-            color: var(--secondary-color);
+        .blog-date {
+            color: #666;
+            font-size: 0.875rem;
             margin-bottom: 1rem;
-            font-size: 1.2rem;
         }
 
         .blog-excerpt {
-            color: var(--text-color);
-            margin-bottom: 1rem;
+            color: #444;
             line-height: 1.6;
+            margin-bottom: 1rem;
         }
 
         .read-more {
-            color: var(--primary-color);
+            display: inline-block;
+            color: #007bff;
             text-decoration: none;
             font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .read-more:hover {
-            color: var(--secondary-color);
+            text-decoration: underline;
         }
 
-        .no-blogs {
+        .blog-header {
             text-align: center;
-            padding: 3rem;
-            background-color: var(--white);
-            border-radius: 10px;
+            margin-bottom: 3rem;
         }
 
-        .loading {
-            text-align: center;
-            padding: 3rem;
+        .blog-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
         }
 
-        @media (max-width: 768px) {
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
+        .blog-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -137,18 +116,14 @@
     </header>
 
     <main>
-        <section class="blog-section">
-            <div class="blog-container">
-                <div class="blog-header">
-                    <h2>Tibbiyot yangiliklari va maslahatlar</h2>
-                    <p>Tibbiyot, sog'lik va davolanish haqida eng so'nggi yangiliklarimiz bilan tanishing</p>
-                </div>
-
-                <div id="blog-grid" class="blog-grid">
-                    <div class="loading">Yuklanmoqda...</div>
-                </div>
+        <div class="blog-container">
+            <div class="blog-header">
+                <h1>Healthcare Blog</h1>
+                <p>Stay updated with the latest healthcare news, medical advancements, and wellness tips from Tajmahal
+                    Healthcare.</p>
             </div>
-        </section>
+            <div class="blog-grid" id="blogGrid"></div>
+        </div>
     </main>
 
     <footer>
@@ -188,61 +163,28 @@
 
     <script src="script.js"></script>
     <script>
-        // Load blog posts
-        async function loadBlogs() {
-            const blogGrid = document.getElementById('blog-grid');
-
-            try {
-                const response = await fetch('/api/blogs');
-                const blogs = await response.json();
-
-                if (blogs.length === 0) {
-                    blogGrid.innerHTML = `
-                        <div class="no-blogs">
-                            <h3>Hozircha blog postlari mavjud emas</h3>
-                            <p>Tez orada yangi ma'lumotlar bilan qaytamiz</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                blogGrid.innerHTML = '';
-
-                blogs.forEach(blog => {
-                    const date = new Date(blog.createdAt).toLocaleDateString('uz-UZ', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-
-                    blogGrid.innerHTML += `
-                        <article class="blog-card">
-                            <img src="${blog.image || 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'}" 
-                                alt="${blog.title}" class="blog-image">
+        function loadBlogPosts() {
+            fetch('/api/blogs')
+                .then(response => response.json())
+                .then(blogs => {
+                    const blogGrid = document.getElementById('blogGrid');
+                    blogGrid.innerHTML = blogs.map(blog => `
+                        <div class="blog-card">
+                            <img src="${blog.image || '/images/default-blog.jpg'}" alt="${blog.title}" class="blog-image">
                             <div class="blog-content">
-                                <div class="blog-date">${date}</div>
-                                <h3 class="blog-title">${blog.title}</h3>
-                                <p class="blog-excerpt">${blog.content.replace(/<[^>]*>/g, '').substring(0, 150)}...</p>
-                                <a href="/blog-detail.html?id=${blog._id}" class="read-more">
-                                    Batafsil <i class="fas fa-arrow-right"></i>
-                                </a>
+                                <h2 class="blog-title">${blog.title}</h2>
+                                <div class="blog-date">${new Date(blog.createdAt).toLocaleDateString()}</div>
+                                <div class="blog-excerpt">${blog.content.substring(0, 150)}...</div>
+                                <a href="/blog-post.html?id=${blog._id}" class="read-more">Read More →</a>
                             </div>
-                        </article>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error loading blogs:', error);
-                blogGrid.innerHTML = `
-                    <div class="no-blogs">
-                        <h3>Blog postlarini yuklashda xatolik yuz berdi</h3>
-                        <p>Iltimos, keyinroq qayta urinib ko'ring</p>
-                    </div>
-                `;
-            }
+                        </div>
+                    `).join('');
+                })
+                .catch(error => console.error('Error loading blogs:', error));
         }
 
-        // Load blogs when page loads
-        window.addEventListener('DOMContentLoaded', loadBlogs);
+        // Initial load
+        loadBlogPosts();
 
         // Handle mobile menu
         document.querySelector('.mobile-menu').addEventListener('click', function () {

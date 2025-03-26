@@ -102,8 +102,8 @@ connectWithRetry();
 const blogSchema = new mongoose.Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: String, required: true },
     image: { type: String },
+    author: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
 });
 
@@ -186,7 +186,7 @@ const isAdmin = (req, res, next) => {
     if (req.session.isAdmin) {
         next();
     } else {
-        res.redirect('/admin/login');
+        res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 };
 
@@ -362,36 +362,24 @@ app.post('/api/appointment', async (req, res) => {
 // Blog routes
 app.get('/api/blogs', async (req, res) => {
     try {
-        let blogs;
-        if (useMockDb) {
-            blogs = mockModel('blogs').find().sort({ createdAt: -1 });
-        } else {
-            blogs = await Blog.find().sort({ createdAt: -1 });
-        }
+        const blogs = await Blog.find().sort({ createdAt: -1 });
         res.json(blogs);
     } catch (error) {
         console.error('Error fetching blogs:', error);
-        res.status(500).json({ success: false, message: 'Error fetching blogs' });
+        res.status(500).json({ message: 'Error fetching blogs' });
     }
 });
 
 app.get('/api/blogs/:id', async (req, res) => {
     try {
-        let blog;
-        if (useMockDb) {
-            blog = mockModel('blogs').findById(req.params.id);
-        } else {
-            blog = await Blog.findById(req.params.id);
-        }
-
+        const blog = await Blog.findById(req.params.id);
         if (!blog) {
-            return res.status(404).json({ success: false, message: 'Blog not found' });
+            return res.status(404).json({ message: 'Blog not found' });
         }
-
         res.json(blog);
     } catch (error) {
         console.error('Error fetching blog:', error);
-        res.status(500).json({ success: false, message: 'Error fetching blog' });
+        res.status(500).json({ message: 'Error fetching blog' });
     }
 });
 
@@ -567,26 +555,20 @@ app.delete('/api/blogs/:id', isAdmin, async (req, res) => {
     }
 });
 
-// Initialize admin user
+// Initialize admin user if not exists
 const initAdminUser = async () => {
     try {
-        if (useMockDb) {
-            console.log('Using mock database with pre-configured admin user (username: admin, password: admin123)');
-            return;
-        }
-
-        const adminCount = await Admin.countDocuments();
-        if (adminCount === 0) {
+        const adminExists = await Admin.findOne({ username: 'admin' });
+        if (!adminExists) {
             const hashedPassword = await bcrypt.hash('admin123', 10);
-            const admin = new Admin({
+            await Admin.create({
                 username: 'admin',
                 password: hashedPassword
             });
-            await admin.save();
-            console.log('Default admin user created');
+            console.log('Admin user created successfully');
         }
     } catch (error) {
-        console.error('Error creating admin user:', error);
+        console.error('Error initializing admin user:', error);
     }
 };
 
